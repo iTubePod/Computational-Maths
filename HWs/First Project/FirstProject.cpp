@@ -6,7 +6,7 @@
 int main ()
 {
 	std::ifstream input;
-	int tmp;
+	int tmp, ltmp;
 	int x;
 	bool unique=true;
 	bool Reflexive = true;
@@ -63,18 +63,44 @@ int main ()
 	}
 	std::cout<<"}"<<std::endl;
 
-	//reflexive test
+	//Reflexive test
 	for (int i=0; i<members.size();i++)
 	{
+		tmp=members[i];
+		//std::cout<<tmp<<std::endl;
 		for (int j=0;j<pairs.size(); j++)
 		{
 			if(tmp==pairs[j] && tmp==pairs[j+1])
 				Reflexive=Reflexive*true;
 			else
-				Reflexive=Reflexive*false;
+			{
+				if (j==(pairs.size()-2))
+					Reflexive=Reflexive*false;
+			}
 			//std::cout<<pairs[j]<<pairs[j+1]<<std::endl;
 			j++;
 		}
 	}
+	if (Reflexive)
+		std::cout<<"REFLEXIVE"<<std::endl;
+	else
+		std::cout<<"IRREFLEXIVE"<<std::endl;
+	/*//Transitive test
+	for (int i=0; i<pairs.size();i++)
+	{
+		ltmp=pair
+		tmp=pair[i+1];
+		if(tmp==pair[i])
+		{
+			for (int j = 0; j < pairs.size(); i++)
+			{
+				/* code
+			}
+		}
+	}
+	if (Reflexive)
+		std::cout<<"REFLEXIVE"<<std::endl;
+	else
+		std::cout<<"IRREFLEXIVE"<<std::endl;*/
 
 }
