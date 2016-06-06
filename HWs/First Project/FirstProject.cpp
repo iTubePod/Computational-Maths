@@ -6,7 +6,7 @@
 int main ()
 {
 	std::ifstream input;
-	int tmp, ltmp;
+	int tmp, ltmp, fpair, spair;
 	int x;
 	bool unique=true;
 	bool Reflexive = true;
@@ -85,22 +85,76 @@ int main ()
 		std::cout<<"REFLEXIVE"<<std::endl;
 	else
 		std::cout<<"IRREFLEXIVE"<<std::endl;
-	/*//Transitive test
-	for (int i=0; i<pairs.size();i++)
+	//Transitive test
+	for (int i=0; i<pairs.size()-1;i++)
 	{
-		ltmp=pair
-		tmp=pair[i+1];
-		if(tmp==pair[i])
+		fpair=pairs[i];
+		spair=pairs[i+1];
+		std::cout<<"Pair "<<fpair<<", "<<spair<<std::endl;
+		for (int j=0; j<pairs.size()-1;j++)
 		{
-			for (int j = 0; j < pairs.size(); i++)
+			if(spair==pairs[j])
 			{
-				/* code
+				spair=pairs[j+1];
+				std::cout<<"Looking for pair "<<fpair<<", "<<spair<<std::endl;
+				for (int k=0;k<pairs.size(); k++)
+				{
+					if(fpair==pairs[k] && spair==pairs[k+1])
+					{
+						Transitive=Transitive*true;
+						std::cout<<"FOUND!"<<std::endl;
+						j=pairs.size();
+						i++;
+						i++;
+					}
+					else
+					{
+						if (k==(pairs.size()-2))
+						{
+							Transitive=Transitive*false;
+							std::cout<<"NOT FOUND!"<<std::endl;
+						}
+					}
+					k++;
+				}
 			}
+			j++;
 		}
+		i++;
 	}
-	if (Reflexive)
-		std::cout<<"REFLEXIVE"<<std::endl;
+	if (Transitive)
+		std::cout<<"Transitive"<<std::endl;
 	else
-		std::cout<<"IRREFLEXIVE"<<std::endl;*/
+		std::cout<<"Not Transitive"<<std::endl;
+	//Symmetric test
+	for (int i=0;i<pairs.size();i++)
+	{
+		fpair=pairs[i];
+		spair=pairs[i+1];
+		std::cout<<"Looking for pair "<<spair<<", "<<fpair<<std::endl;
+		for (int j = 0; j < pairs.size(); j++)
+		{
+			if(spair==pairs[j] && fpair==pairs[j+1])
+			{
+				Symmetric=Symmetric*true;
+				std::cout<<"FOUND!"<<std::endl;
+				j=pairs.size();
+			}
+			else
+			{
+				if(j==(pairs.size()-2))
+				{
+					Symmetric=Symmetric*false;
+					std::cout<<"NOT FOUND!"<<std::endl;
+				}
+			}
+			j++;
+		}
+		i++;		
+	}
+	if (Symmetric)
+		std::cout<<"Symmetric"<<std::endl;
+	else
+		std::cout<<"Not Symmetric"<<std::endl;
 
 }
