@@ -1,11 +1,19 @@
+/*
+	Hector Mauricio Gonzalez Coello
+	A01328258
+	ITC
+	6/6/2016
+*/
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include <vector>
 
 bool Reflexive (std::vector<int> pairs, std::vector<int> members);
-bool Transitive (std::vector<int> pairs, std::vector<int> members);
-bool Symmetric (std::vector<int> pairs, std::vector<int> members);
+bool Irreflexive (std::vector<int> pairs, std::vector<int> members);
+bool Transitive (std::vector<int> pairs);
+bool Asymmetric (std::vector<int> pairs);
+bool Symmetric (std::vector<int> pairs);
 
 int main ()
 {
@@ -59,7 +67,7 @@ int main ()
 	std::cout<<"}"<<std::endl;
 
 	//prints the properties that the relation meets
-	std::cout << "La relacion es: " <<( (Reflexive(pairs, members)) ? "REFLEXIVA " : "IRREFLEXIVA ") <<( (Transitive(pairs, members)) ? "TRANSITIVA " : "")<<( (Symmetric(pairs, members)) ? "SIMETRICA " : "ASIMETRICA ")<< std::endl;
+	std::cout << "La relacion es: " <<( (Reflexive(pairs, members)) ? "REFLEXIVA " : "") << ( (Irreflexive(pairs, members)) ? "IRREFLEXIVA " : "") << ( (Transitive(pairs)) ? "TRANSITIVA " : "")<<( (Symmetric(pairs)) ? "SIMETRICA " : "")<<( (Asymmetric(pairs)) ? "ASIMETRICA " : "")<< std::endl;
 	if(!Reflexive && !Transitive && !Symmetric)
 		std::cout<< "“NO CUMPLE NINGUNA" <<std::endl;
 
@@ -72,7 +80,6 @@ bool Reflexive (std::vector<int> pairs, std::vector<int> members)
 	for (int i=0; i<members.size();i++)
 	{
 		tmp=members[i];
-		//std::cout<<tmp<<std::endl;
 		for (int j=0;j<pairs.size(); j++)
 		{
 			if(tmp==pairs[j] && tmp==pairs[j+1])
@@ -82,13 +89,39 @@ bool Reflexive (std::vector<int> pairs, std::vector<int> members)
 				if (j==(pairs.size()-2))
 					Reflexive=Reflexive*false;
 			}
-			//std::cout<<pairs[j]<<pairs[j+1]<<std::endl;
 			j++;
 		}
 	}
 	return Reflexive;
 }
-bool Transitive (std::vector<int> pairs, std::vector<int> members)
+bool Irreflexive (std::vector<int> pairs, std::vector<int> members)
+{
+	//Irreflexive test
+	bool Irreflexive = true;
+	int tmp, ltmp;
+	for (int i=0; i<members.size();i++)
+	{
+		tmp=members[i];
+		for (int j=0;j<pairs.size(); j++)
+		{
+			if(tmp!=pairs[j] && tmp!=pairs[j+1])
+			{
+				Irreflexive=Irreflexive*true;
+			}
+
+			else
+			{
+				if (j==(pairs.size()-2))
+					Irreflexive=false;
+			}
+			j++;
+		}
+	}
+	return Irreflexive;
+
+}
+
+bool Transitive (std::vector<int> pairs)
 {
 	//Transitive test
 	bool Transitive = true;
@@ -97,20 +130,17 @@ bool Transitive (std::vector<int> pairs, std::vector<int> members)
 	{
 		fpair=pairs[i];
 		spair=pairs[i+1];
-		//std::cout<<"Pair "<<fpair<<", "<<spair<<std::endl;
 		for (int j=0; j<pairs.size()-1;j++)
 		{
 			if(spair==pairs[j])
 			{
 				spair=pairs[j+1];
-				//std::cout<<"Looking for pair "<<fpair<<", "<<spair<<std::endl;
 				for (int k=0;k<pairs.size(); k++)
 				{
 					if(fpair==pairs[k] && spair==pairs[k+1])
 					{
 						Transitive=Transitive*true;
-						//std::cout<<"FOUND!"<<std::endl; 
-						j=pairs.size();
+						k=pairs.size();
 						i++;
 						i++;
 					}
@@ -119,7 +149,6 @@ bool Transitive (std::vector<int> pairs, std::vector<int> members)
 						if (k==(pairs.size()-2))
 						{
 							Transitive=Transitive*false;
-							//std::cout<<"NOT FOUND!"<<std::endl;
 						}
 					}
 					k++;
@@ -131,7 +160,8 @@ bool Transitive (std::vector<int> pairs, std::vector<int> members)
 	}
 	return Transitive;
 }
-bool Symmetric (std::vector<int> pairs, std::vector<int> members)
+
+bool Symmetric (std::vector<int> pairs)
 {
 	//Symmetric test
 	bool Symmetric = true;
@@ -140,21 +170,19 @@ bool Symmetric (std::vector<int> pairs, std::vector<int> members)
 	{
 		fpair=pairs[i];
 		spair=pairs[i+1];
-		//std::cout<<"Looking for pair "<<spair<<", "<<fpair<<std::endl;
 		for (int j = 0; j < pairs.size(); j++)
 		{
 			if(spair==pairs[j] && fpair==pairs[j+1])
 			{
 				Symmetric=Symmetric*true;
-				//std::cout<<"FOUND!"<<std::endl;
-				j=pairs.size();
+				break;
 			}
 			else
 			{
 				if(j==(pairs.size()-2))
 				{
-					Symmetric=Symmetric*false;
-					//std::cout<<"NOT FOUND!"<<std::endl;
+					Symmetric=false;
+					break;
 				}
 			}
 			j++;
@@ -162,4 +190,32 @@ bool Symmetric (std::vector<int> pairs, std::vector<int> members)
 		i++;		
 	}
 	return Symmetric;
+}
+bool Asymmetric (std::vector<int> pairs)
+{
+	bool Asymmetric = true;
+	int fpair, spair;
+	for (int i=0;i<pairs.size();i++)
+	{
+		fpair=pairs[i];
+		spair=pairs[i+1];
+		for (int j = 0; j < pairs.size(); j++)
+		{
+			if(spair!=pairs[j] || fpair!=pairs[j+1])
+			{
+				Asymmetric=Asymmetric*true;
+			}
+			else
+			{
+				if(j==(pairs.size()-2))
+				{
+					Asymmetric=false;
+					break;
+				}
+			}
+			j++;
+		}
+		i++;		
+	}
+	return Asymmetric;
 }
