@@ -3,19 +3,19 @@
 #include <sstream>
 #include <string>
 #include <vector>
+void combine (std::vector<std::string> *comb)
+{
 
+}
 int main ()
 {
 	//infile
 		std::ifstream input;
 		int tp;
-		char a;
-		std::string NFA, tmp;
+		char a, TN;
+		std::string NFA, tmp, IS;
 		std::vector <int> n;
-		std::vector <std::string> states;
-		char TN;
-		std::string IS;
-		std::vector <std::string> FS;
+		std::vector <std::string> states, FS;
 		input.open("ex.txt");
 		if (!input.fail())
 		{
@@ -29,11 +29,6 @@ int main ()
 				states.push_back(tmp);
 				input>>tmp;
 			}
-			for (int i = 0; i < states.size(); i++)
-			{
-				std::cout<<states[i]<<" ";
-			}
-			std::cout<<std::endl;
 			input.ignore(64, '{');
 			input>>a;
 			tp=a-48;
@@ -43,13 +38,8 @@ int main ()
 				input>>a;
 				tp=a-48;
 			}
-			for (int i = 0; i < n.size(); i++)
-			{
-				std::cout<<n[i]<<" ";
-			}
 			input>>TN;
 			input>>IS;
-			std::cout<<std::endl<<"TN "<<TN<<" IS "<<IS<<std::endl;
 			input.ignore(64, '{');
 			input>>tmp;
 			while(tmp != "})")
@@ -57,27 +47,14 @@ int main ()
 				FS.push_back(tmp);
 				input>>tmp;
 			}
-			for (int i = 0; i < FS.size(); i++)
+			std::string table [n.size()+1] [states.size()+1];
+			for (int i = 0; i <= n.size(); i++)
 			{
-				std::cout<<FS[i]<<" ";
-			}
-			/*std::string table [n] [y];
-			std::cout<<"Table imported correctly"<<std::endl;
-			for (int i = 0; i < n; i++)
-			{
-				for (int j = 0; j < y; j++)
+				for (int j = 0; j <= states.size(); j++)
 				{
 					input>>table[i][j];
 				}
 			}
-			for (int i = 0; i < n; i++)
-			{
-				for (int j = 0; j < y; j++)
-				{
-					std::cout<<table[i][j]<<" ";
-				}
-				std::cout<<std::endl;
-			}*/
 		}
 		else
 		{
