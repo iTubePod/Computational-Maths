@@ -85,30 +85,22 @@ int main ()
 std::vector<std::vector<std::string> > combination (std::vector<std::string> states)
 {
 	//std::cout<<states.size();
+	std::string tp;
 	std::vector<std::string> tmp;
 	std::vector<std::vector<std::string> > rtrn;
-	for (int i = 0; i < states.size(); i++)
-	{
-		//std::cout<<std::endl<<i;
-		for (int j = 0; j < states.size(); j++)
-		{
-			//std::cout<<std::endl<<j;
-			if (i==0 && j==0)
-				tmp.push_back("/");
-			else if (i==0 && j==1)
-				tmp.push_back(states[0]);
-			else if (i==1 && j==0)
-				tmp.push_back(states[1]);
-			else if (i==1 && j==1)
-			{
-				tmp.push_back(states[0]);
-				tmp.push_back(states[1]);
-			}
-			rtrn.push_back(tmp);
-			tmp.clear();
-		}
-	}
-	return rtrn;
+    rtrn.push_back( tmp );
+
+    for (int i = 0; i < states.size(); i++)
+    {
+        std::vector< std::vector<std::string> > rtrnTemp = rtrn;
+
+        for (int j = 0; j < rtrnTemp.size(); j++)
+            rtrnTemp[j].push_back( states[i] );
+
+        for (int j = 0; j < rtrnTemp.size(); j++)
+            rtrn.push_back( rtrnTemp[j] );
+    }
+    return rtrn;
 }
 std::vector<std::vector<std::string> > newTable(std::vector<std::vector<std::string> > table, std::vector<std::vector<std::string> > nStates)
 {
@@ -128,7 +120,7 @@ std::vector<std::vector<std::string> > newTable(std::vector<std::vector<std::str
 				if(k<nStates[j].size()-1)
 					tmp=tmp+"-";
 			}
-			tlp.push_back(findSt(nStates.size(), tmp, table));
+			tlp.push_back(tmp);
 		}
 		ntable.push_back(tlp);
 		tlp.clear();
@@ -191,9 +183,7 @@ std::vector<std::vector<std::string> > FillnewTable(std::vector<std::vector<std:
 							insert(table[x][k], ntable[i][k], true);
 						else
 							insert(table[x][k], ntable[i][k], false);
-						std::cout<<"First k loop: "<<table[x][k]<<" in space "<<i<<" "<<k<<" ";
 					}
-					std::cout<<std::endl;
 				}
 			}
 			else
@@ -203,9 +193,7 @@ std::vector<std::vector<std::string> > FillnewTable(std::vector<std::vector<std:
 					for (int k = 1; j < table[j].size(); k++)
 					{
 						insert(table[j][k], ntable[i][k], false);
-						std::cout<<"Second k loop: "<<table[x][k]<<" in space "<<i<<" "<<k<<" ";
 					}
-					std::cout<<std::endl;
 				}
 			}
 		}
@@ -232,6 +220,7 @@ void insert (std::string ins, std::string &where, bool dash)
 }
 void cleanup(std::vector<std::vector<std::string> > &final)
 {
+	final[0][0]="n";
 	for (int i = 0; i < final.size(); ++i)
 	{
 		for (int j = 0; j < final[i].size(); j++)
