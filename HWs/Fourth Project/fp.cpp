@@ -10,25 +10,36 @@ void test(std::string tst, std::vector<std::vector<std::string> > &gramm);
 
 int main ()
 {
+	bool test=false;
 	char ans = 'a';
 	std::vector<std::vector<std::string> > gramm;
 	std::vector<std::string> var, end;
 	std::string in, grm, start;
+	std::cout << "\n==	 Project 4 Matematicas Computacionales 	  ==";
+    std::cout << "\n==	     Mauricio G. Coello A01328258      	  ==\n";
+
     while (ans != 'q')
     {
-        std::cout << "\n==	 Project 4 Matematicas Computacionales 	  ==";
-        std::cout << "\n==	     Mauricio G. Coello A01328258      	  ==\n\n";
+    	std::cout<<std::endl;
+        std::cout << "==	     		MENU      	  	  ==\n\n";
         std::cout << "\tl. Leer Gramatica desde archivo\n";
         std::cout << "\tc. Comprobar string\n";
+        std::cout << "\td. DEBUG TOOLS\n";
         std::cout << "\tq. Salir\n";
         std::cout << "Opcion> ";
         std::cin >> ans;
-
+        std::cout<<std::endl;
         switch (ans)
         {
         	case 'l':
+        		gramm.clear();
+        		var.clear();
+        		end.clear();
+        		grm="";
+        		start="";
         		rfile(gramm, var, end, grm, start);
-        		print(gramm, var, end, grm, start);
+        		if(test)
+        			print(gramm, var, end, grm, start);
         		break;
         	case 'c':
         		std::cout<<"Dame el string a evaluar"<<std::endl;
@@ -38,6 +49,21 @@ int main ()
             case 'q':
                 std::cout << "Closing..." << std::endl;
                 gramm.clear();
+                var.clear();
+                end.clear();
+                break;
+            case 'd':
+               
+                if(!test)
+                {
+                	std::cout << "Enabling debug..." << std::endl;
+                	test=true;
+                }
+                else
+                {
+                	std::cout << "Disabling debug..." << std::endl;
+                	test=false;
+                }
                 break;
             default:
                 std::cout << "Invalid option ..." << std::endl;
@@ -55,15 +81,17 @@ void rfile(std::vector<std::vector<std::string> > &in, std::vector<std::string> 
 	input.open("gram.txt");
 	if (!input.fail())
 	{
-		std::cout<<"Loading data from file..."<<std::endl;
+		std::cout<<"Loading data from file .";
 		input.ignore(1, 'G');
 		input.ignore(1, '=');
+		std::cout<<".";
 		input.ignore(1, '(');
 		input.ignore(1, '{');
+		std::cout<<".";
 		input>>tmp;
-		std::cout<<"First tmp"<<tmp<<std::endl;
 		var.push_back(tmp);
 		input>>tmp;
+		std::cout<<".";
 		while(tmp!="}")
 		{
 			if(tmp=="}")
@@ -75,10 +103,13 @@ void rfile(std::vector<std::vector<std::string> > &in, std::vector<std::string> 
 			}
 			input>>tmp;
 		}
+		std::cout<<".";
 		input.ignore(1, '{');
 		input>>tmp;
+		std::cout<<".";
 		end.push_back(tmp);
 		input>>tmp;
+		std::cout<<".";
 		while(tmp!="}")
 		{
 			if(tmp=="}")
@@ -90,8 +121,10 @@ void rfile(std::vector<std::vector<std::string> > &in, std::vector<std::string> 
 			}
 			input>>tmp;
 		}
+		std::cout<<".";
 		input>>grm;
 		input>>start;
+		std::cout<<".";
 		input.ignore(64, ')');				
 		for (int i = 0; i < var.size(); i++)
 		{
@@ -112,6 +145,8 @@ void rfile(std::vector<std::vector<std::string> > &in, std::vector<std::string> 
 			in.push_back(tp);
 			tp.clear();
 		}
+		std::cout<<".";
+		std::cout<<" DONE"<<std::endl;
 	}
 	else
 	{
