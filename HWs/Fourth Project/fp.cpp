@@ -22,11 +22,11 @@ int main ()
     {
     	std::cout<<std::endl;
         std::cout << "==	     		MENU      	  	  ==\n\n";
-        std::cout << "\tl. Leer Gramatica desde archivo\n";
-        std::cout << "\tc. Comprobar string\n";
+        std::cout << "\tl. Load grammar from file\n";
+        std::cout << "\tt. Test string\n";
         std::cout << "\td. DEBUG TOOLS\n";
-        std::cout << "\tq. Salir\n";
-        std::cout << "Opcion> ";
+        std::cout << "\tq. Quit\n";
+        std::cout << "Option> ";
         std::cin >> ans;
         std::cout<<std::endl;
         switch (ans)
@@ -41,8 +41,8 @@ int main ()
         		if(test)
         			print(gramm, var, end, grm, start);
         		break;
-        	case 'c':
-        		std::cout<<"Dame el string a evaluar"<<std::endl;
+        	case 't':
+        		std::cout<<"Enter string to evaluate"<<std::endl;
         		std::cout<<"	>";
         		std::cin>>in;
         		break;
