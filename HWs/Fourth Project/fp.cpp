@@ -51,12 +51,16 @@ void delta::printClass()
 void rfile(std::vector<delta> &in, std::vector<std::string> &var, char &start);
 void print(std::vector<delta> &in, std::vector<std::string> &var, char &start);
 void leftS(std::vector<delta> &in, std::string test, std::string generated, std::string last);
+void rightS(std::vector<delta> &in, std::string test, std::string generated, std::string last);
+void bothS(std::vector<delta> &in, std::string test, std::string generated, std::string last);
+
 
 int main ()
 {
 	std::stringstream ss;
 	bool test=false;
 	char ans = 'a';
+	char anw = 'a';
 	std::vector<std::string> var;
 	std::vector<delta> delta;
 	int lim;
@@ -94,13 +98,29 @@ int main ()
         		std::cout<<"Enter string to evaluate"<<std::endl;
         		std::cout<<"	>";
         		std::cin>>in;
-        		std::cout<<"Give me the limit of recursions"<<std::endl;
-        		std::cout<<"	>";
-        		std::cin>>lim;
         		ss<<start;
         		ss>>str;
-        		leftS(delta, in, str, str);
-        		//std::cout<<"LEFT "<<left(delta, in, "", 3, 0, start)<<std::endl;
+        		std::cout<<"	Select an option"<<std::endl;
+        	    std::cout << "\t 	1. Both sides\n";
+        		std::cout << "\t 	2. Left\n";
+        		std::cout << "\t 	3. Right\n";
+        		std::cout << " 	Option> ";
+        		std::cin>>anw;
+        		switch (anw)
+		        {
+		        	case '1':
+		        		bothS(delta, in, str, str);
+		        		break;
+		        	case '2':
+		        		leftS(delta, in, str, str);
+		        		break;
+		        	case '3':
+		        		rightS(delta, in, str, str);
+		        		break;
+		        	default:
+		        		std::cout << "Invalid option ..." << std::endl;
+                		break;
+		        }
         		break;
             case 'q':
                 std::cout << "Closing..." << std::endl;
@@ -230,7 +250,7 @@ std::vector<std::string> lookforvar(std::vector<delta> &in, char act, bool &x)
 	x=false;
 	return tp;
 }
-void leftS(std::vector<delta> &in, std::string test, std::string generated, std::string last)
+void bothS(std::vector<delta> &in, std::string test, std::string generated, std::string last)
 {
 	//std::cout<<last<<" -> ";
 	std::string tmp, tmp2;
@@ -257,9 +277,78 @@ void leftS(std::vector<delta> &in, std::string test, std::string generated, std:
 					{
 						tmp.replace(j, 1, tp[l]);
 						tmp2=generated + " -> " + tmp;
+						bothS(in, test, tmp2, tmp);
+					}
+				}
+			}
+		}
+	}
+}
+void leftS(std::vector<delta> &in, std::string test, std::string generated, std::string last)
+{
+	//std::cout<<last<<" -> ";
+	std::string tmp, tmp2;
+	std::vector<std::string> tp;
+	bool x = false;
+	if(last==test)
+	{
+		std::cout<<generated<<std::endl;
+	}
+	else
+	{
+		for (int j = 0; j < last.size(); j++)
+		{
+			x=false;
+			tp=lookforvar(in, last[j], x);
+			if(x)
+			{
+				for (int l = 0; l < tp.size(); l++)
+				{
+					tmp=last;
+					tmp2=generated;
+					if(tmp.size()<=test.size())
+					{
+						tmp.replace(j, 1, tp[l]);
+						tmp2=generated + " -> " + tmp;
 						leftS(in, test, tmp2, tmp);
 					}
 				}
+				break;
+			}
+		}
+	}
+}
+void rightS(std::vector<delta> &in, std::string test, std::string generated, std::string last)
+{
+	//std::cout<<last<<" -> ";
+	std::string tmp, tmp2;
+	std::vector<std::string> tp;
+	bool x = false;
+	if(last==test)
+	{
+		std::cout<<generated<<std::endl;
+	}
+	else
+	{
+		for (int j = last.size()-1; j >= 0; j--)
+		{
+			x=false;
+			tp=lookforvar(in, last[j], x);
+			if(x)
+			{
+				for (int l = 0; l < tp.size(); l++)
+				{
+					tmp=last;
+					tmp2=generated;
+					//std::cout<<"HOLA "<<tmp.size()<<" "<<test.size()<<" "<<tmp<<" "<<test<<std::endl;
+					if(tmp.size()<=test.size())
+					{
+						tmp.replace(j, 1, tp[l]);
+						tmp2=generated + " -> " + tmp;
+						rightS(in, test, tmp2, tmp);
+					}
+				}
+				break;
 			}
 		}
 	}
