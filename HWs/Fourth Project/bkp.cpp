@@ -50,18 +50,17 @@ void delta::printClass()
 
 void rfile(std::vector<delta> &in, std::vector<std::string> &var, char &start);
 void print(std::vector<delta> &in, std::vector<std::string> &var, char &start);
-void leftS(std::vector<delta> &in, std::string test, std::string generated, std::string last);
+void leftS(std::vector<delta> &in, std::string test, std::vector<std::string> generated, char &start);
 
 int main ()
 {
-	std::stringstream ss;
 	bool test=false;
 	char ans = 'a';
-	std::vector<std::string> var;
+	std::vector<std::string> var, generated;
 	std::vector<delta> delta;
 	int lim;
 	//std::vector<std::vector<std::string> > delta;
-	std::string in, str;
+	std::string in;
 	char start;
 	std::cout << "\n==	 Project 4 Matematicas Computacionales 	  ==";
     std::cout << "\n==	     Mauricio G. Coello A01328258      	  ==\n";
@@ -97,9 +96,7 @@ int main ()
         		std::cout<<"Give me the limit of recursions"<<std::endl;
         		std::cout<<"	>";
         		std::cin>>lim;
-        		ss<<start;
-        		ss>>str;
-        		leftS(delta, in, str, str);
+        		leftS(delta, in, generated, start);
         		//std::cout<<"LEFT "<<left(delta, in, "", 3, 0, start)<<std::endl;
         		break;
             case 'q':
@@ -230,34 +227,41 @@ std::vector<std::string> lookforvar(std::vector<delta> &in, char act, bool &x)
 	x=false;
 	return tp;
 }
-void leftS(std::vector<delta> &in, std::string test, std::string generated, std::string last)
+void leftS(std::vector<delta> &in, std::string test, std::vector<std::string> generated, char &start)
 {
-	//std::cout<<last<<" -> ";
-	std::string tmp, tmp2;
+	std::string tmp;
 	std::vector<std::string> tp;
 	bool x = false;
-	if(last==test)
+	if(generated.size()==0)
 	{
-		std::cout<<generated<<std::endl;
+		generated.push_back(" ");
+		generated[0][0]=start;
+		std::cout<<generated[0]<<" -> ";
+		leftS(in, test, generated, start);
 	}
 	else
 	{
-		for (int j = 0; j < last.size(); j++)
+		if(generated[generated.size()-1]==test)
 		{
-			x=false;
-			tp=lookforvar(in, last[j], x);
-			if(x)
+			return;
+		}
+		else
+		{
+			for (int j = 0; j < generated[generated.size()-1].size(); j++)
 			{
-				for (int l = 0; l < tp.size(); l++)
+				x=false;
+				//std::cout<<"Hola"<<std::endl;
+				tp=lookforvar(in, generated[generated.size()-1][j], x);
+				//std::cout<<"Adios"<<std::endl;
+				if(x)
 				{
-					tmp=last;
-					tmp2=generated;
-					//std::cout<<"HOLA "<<tmp.size()<<" "<<test.size()<<" "<<tmp<<" "<<test<<std::endl;
-					if(tmp.size()<=test.size())
+					for (int l = 0; l < tp.size(); l++)
 					{
-						tmp.replace(j, 1, tp[l]);
-						tmp2=generated + " -> " + tmp;
-						leftS(in, test, tmp2, tmp);
+						tmp=generated[generated.size()-1];
+						tmp.replace(j, j+1, tp[l]);
+						//std::cout<<tmp<<" -> ";
+						generated.push_back(tmp);
+						leftS(in, test, generated, start);
 					}
 				}
 			}
