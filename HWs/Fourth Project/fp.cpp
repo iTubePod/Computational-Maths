@@ -141,14 +141,14 @@ void rfile(std::vector<delta> &in, std::vector<std::string> &var, char &start)
 		std::cout<<"Loading data from file .";
 		input.ignore(1, 'G');
 		input.ignore(1, '=');
-		std::cout<<".";
+		std::cout<<"..";
 		input.ignore(1, '(');
 		input.ignore(1, '{');
-		std::cout<<".";
+		std::cout<<"..";
 		input>>tmp;
 		var.push_back(tmp);
 		input>>tmp;
-		std::cout<<".";
+		std::cout<<"..";
 		while(tmp!="}")
 		{
 			if(tmp=="}")
@@ -160,7 +160,7 @@ void rfile(std::vector<delta> &in, std::vector<std::string> &var, char &start)
 			}
 			input>>tmp;
 		}
-		std::cout<<".";
+		std::cout<<"..";
 		input.ignore(1, '{');
 		input>>tmp;
 		std::cout<<".";
@@ -170,10 +170,10 @@ void rfile(std::vector<delta> &in, std::vector<std::string> &var, char &start)
 		{
 			input>>tmp;
 		}
-		std::cout<<".";
+		std::cout<<"..";
 		input>>tmp;
 		input>>start;
-		std::cout<<".";
+		std::cout<<"..";
 		input.ignore(64, ')');				
 		for (int i = 0; i < var.size(); i++)
 		{
@@ -197,8 +197,8 @@ void rfile(std::vector<delta> &in, std::vector<std::string> &var, char &start)
 			in.push_back(x);
 			tp.clear();
 		}
-		std::cout<<".";
-		std::cout<<" DONE"<<std::endl;
+		std::cout<<"..";
+		std::cout<<"....... DONE"<<std::endl;
 	}
 	else
 	{
